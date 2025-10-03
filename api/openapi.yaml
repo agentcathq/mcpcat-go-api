@@ -1,0 +1,331 @@
+openapi: 3.0.3
+info:
+  description: API for MCPCat application
+  title: MCPCat API
+  version: v1
+servers:
+- description: Local server
+  url: http://localhost:8000
+paths:
+  /v1/public/events/:
+    post:
+      description: Submit analytics events for a project. Returns immediately with
+        202 Accepted.
+      operationId: publishEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/publishEvent_request'
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventAcceptedResponse'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                description: Invalid request data
+          description: ""
+        "404":
+          content:
+            application/json:
+              schema:
+                description: Project not found
+          description: ""
+      security:
+      - tokenAuth: []
+      - {}
+      summary: Publish analytics event
+      tags:
+      - Events
+  /v1/schema/public/:
+    get:
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      operationId: schema_public_retrieve
+      parameters:
+      - explode: true
+        in: query
+        name: format
+        required: false
+        schema:
+          enum:
+          - json
+          - yaml
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: lang
+        required: false
+        schema:
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - ug
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                additionalProperties: {}
+                type: object
+            application/yaml:
+              schema:
+                additionalProperties: {}
+                type: object
+            application/vnd.oai.openapi+json:
+              schema:
+                additionalProperties: {}
+                type: object
+            application/json:
+              schema:
+                additionalProperties: {}
+                type: object
+          description: ""
+      security:
+      - tokenAuth: []
+      - {}
+      tags:
+      - schema
+components:
+  schemas:
+    EventAcceptedResponse:
+      example:
+        status: accepted
+      properties:
+        status:
+          default: accepted
+          type: string
+      type: object
+    publishEvent_request:
+      additionalProperties: true
+      example:
+        id: evt_789
+        project_id: proj_123
+        session_id: ses_456
+        event_type: mcp:tools/call
+        resource_name: calculator
+        timestamp: 2025-06-02T12:00:00Z
+        duration: 150
+        user_intent: Calculate the sum of two numbers
+        parameters:
+          tool: calculator
+          operation: add
+          values:
+          - 5
+          - 10
+        response:
+          result: 15
+        ip_address: 192.168.1.1
+        sdk_language: python
+        mcpcat_version: 1.0.0
+        server_name: calculator-mcp-server
+        server_version: 2.1.0
+        client_name: Claude Desktop
+        client_version: 3.0.0
+      properties:
+        id:
+          description: "ID of the event, typically auto-generated by the MCPCat Agent"
+          type: string
+        project_id:
+          description: ID of the project this event belongs to
+          type: string
+        session_id:
+          description: ID of the session this event belongs to
+          type: string
+        actor_id:
+          description: Optional actor ID
+          type: string
+        event_id:
+          description: Optional custom event ID (must be unique)
+          type: string
+        event_type:
+          description: "Type of event (e.g., mcp:tools/call, mcpcat:identify)"
+          enum:
+          - mcp:ping
+          - mcp:initialize
+          - mcp:completion/complete
+          - mcp:logging/setLevel
+          - mcp:prompts/get
+          - mcp:prompts/list
+          - mcp:resources/list
+          - mcp:resources/templates/list
+          - mcp:resources/read
+          - mcp:resources/subscribe
+          - mcp:resources/unsubscribe
+          - mcp:tools/call
+          - mcp:tools/list
+          - mcpcat:identify
+          type: string
+        is_error:
+          description: Whether this event represents an error
+          type: boolean
+        error:
+          description: Error details if is_error is true
+          type: object
+        resource_name:
+          description: Name of the resource accessed (for resource events)
+          type: string
+        duration:
+          description: Duration of the operation in milliseconds
+          type: integer
+        timestamp:
+          description: Agent-provided timestamp of when the event occurred
+          format: date-time
+          type: string
+        user_intent:
+          description: Captured explanation of why the actor made this request
+          type: string
+        parameters:
+          description: Parameters sent with the request
+          type: object
+        response:
+          description: Response data from the operation
+          type: object
+        identify_actor_given_id:
+          description: Actor ID for mcpcat:identify events
+          type: string
+        identify_actor_name:
+          description: Actor name for mcpcat:identify events
+          type: string
+        identify_data:
+          description: Additional data for mcpcat:identify events
+          type: object
+        ip_address:
+          description: IP address of the client
+          format: ipv4
+          type: string
+        sdk_language:
+          description: Programming language of the SDK used
+          type: string
+        mcpcat_version:
+          description: Version of MCPCat being used
+          type: string
+        server_name:
+          description: Name of the MCP server
+          type: string
+        server_version:
+          description: Version of the MCP server
+          type: string
+        client_name:
+          description: Name of the MCP client
+          type: string
+        client_version:
+          description: Version of the MCP client
+          type: string
+      required:
+      - "id, project_id"
+      - session_id
+      type: object
+  securitySchemes:
+    tokenAuth:
+      description: Token-based authentication with required prefix "Token"
+      in: header
+      name: Authorization
+      type: apiKey
