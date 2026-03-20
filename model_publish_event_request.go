@@ -55,6 +55,10 @@ type PublishEventRequest struct {
 	IdentifyActorName *string `json:"identify_actor_name,omitempty"`
 	// Additional data for mcpcat:identify events
 	IdentifyData map[string]interface{} `json:"identify_data,omitempty"`
+	// Custom string key-value pairs. Keys: max 32 chars, alphanumeric/underscore/period/colon/dash only. Values: max 200 chars, no newlines. Max 50 entries.
+	Tags *map[string]string `json:"tags,omitempty"`
+	// Custom structured data. Keys are strings, values can be string, number, boolean, array, object, or null (null values are filtered out).
+	Properties map[string]interface{} `json:"properties,omitempty"`
 	// IP address of the client
 	IpAddress *string `json:"ip_address,omitempty"`
 	// Programming language of the SDK used
@@ -628,6 +632,70 @@ func (o *PublishEventRequest) SetIdentifyData(v map[string]interface{}) {
 	o.IdentifyData = v
 }
 
+// GetTags returns the Tags field value if set, zero value otherwise.
+func (o *PublishEventRequest) GetTags() map[string]string {
+	if o == nil || IsNil(o.Tags) {
+		var ret map[string]string
+		return ret
+	}
+	return *o.Tags
+}
+
+// GetTagsOk returns a tuple with the Tags field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PublishEventRequest) GetTagsOk() (*map[string]string, bool) {
+	if o == nil || IsNil(o.Tags) {
+		return nil, false
+	}
+	return o.Tags, true
+}
+
+// HasTags returns a boolean if a field has been set.
+func (o *PublishEventRequest) HasTags() bool {
+	if o != nil && !IsNil(o.Tags) {
+		return true
+	}
+
+	return false
+}
+
+// SetTags gets a reference to the given map[string]string and assigns it to the Tags field.
+func (o *PublishEventRequest) SetTags(v map[string]string) {
+	o.Tags = &v
+}
+
+// GetProperties returns the Properties field value if set, zero value otherwise.
+func (o *PublishEventRequest) GetProperties() map[string]interface{} {
+	if o == nil || IsNil(o.Properties) {
+		var ret map[string]interface{}
+		return ret
+	}
+	return o.Properties
+}
+
+// GetPropertiesOk returns a tuple with the Properties field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PublishEventRequest) GetPropertiesOk() (map[string]interface{}, bool) {
+	if o == nil || IsNil(o.Properties) {
+		return map[string]interface{}{}, false
+	}
+	return o.Properties, true
+}
+
+// HasProperties returns a boolean if a field has been set.
+func (o *PublishEventRequest) HasProperties() bool {
+	if o != nil && !IsNil(o.Properties) {
+		return true
+	}
+
+	return false
+}
+
+// SetProperties gets a reference to the given map[string]interface{} and assigns it to the Properties field.
+func (o *PublishEventRequest) SetProperties(v map[string]interface{}) {
+	o.Properties = v
+}
+
 // GetIpAddress returns the IpAddress field value if set, zero value otherwise.
 func (o *PublishEventRequest) GetIpAddress() string {
 	if o == nil || IsNil(o.IpAddress) {
@@ -911,6 +979,12 @@ func (o PublishEventRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.IdentifyData) {
 		toSerialize["identify_data"] = o.IdentifyData
 	}
+	if !IsNil(o.Tags) {
+		toSerialize["tags"] = o.Tags
+	}
+	if !IsNil(o.Properties) {
+		toSerialize["properties"] = o.Properties
+	}
 	if !IsNil(o.IpAddress) {
 		toSerialize["ip_address"] = o.IpAddress
 	}
@@ -992,6 +1066,8 @@ func (o *PublishEventRequest) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "identify_actor_given_id")
 		delete(additionalProperties, "identify_actor_name")
 		delete(additionalProperties, "identify_data")
+		delete(additionalProperties, "tags")
+		delete(additionalProperties, "properties")
 		delete(additionalProperties, "ip_address")
 		delete(additionalProperties, "sdk_language")
 		delete(additionalProperties, "mcpcat_version")

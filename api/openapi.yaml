@@ -42,157 +42,6 @@ paths:
       summary: Publish analytics event
       tags:
       - Events
-  /v1/schema/public/:
-    get:
-      description: |-
-        OpenApi3 schema for this API. Format can be selected via content negotiation.
-
-        - YAML: application/vnd.oai.openapi
-        - JSON: application/vnd.oai.openapi+json
-      operationId: schema_public_retrieve
-      parameters:
-      - explode: true
-        in: query
-        name: format
-        required: false
-        schema:
-          enum:
-          - json
-          - yaml
-          type: string
-        style: form
-      - explode: true
-        in: query
-        name: lang
-        required: false
-        schema:
-          enum:
-          - af
-          - ar
-          - ar-dz
-          - ast
-          - az
-          - be
-          - bg
-          - bn
-          - br
-          - bs
-          - ca
-          - ckb
-          - cs
-          - cy
-          - da
-          - de
-          - dsb
-          - el
-          - en
-          - en-au
-          - en-gb
-          - eo
-          - es
-          - es-ar
-          - es-co
-          - es-mx
-          - es-ni
-          - es-ve
-          - et
-          - eu
-          - fa
-          - fi
-          - fr
-          - fy
-          - ga
-          - gd
-          - gl
-          - he
-          - hi
-          - hr
-          - hsb
-          - hu
-          - hy
-          - ia
-          - id
-          - ig
-          - io
-          - is
-          - it
-          - ja
-          - ka
-          - kab
-          - kk
-          - km
-          - kn
-          - ko
-          - ky
-          - lb
-          - lt
-          - lv
-          - mk
-          - ml
-          - mn
-          - mr
-          - ms
-          - my
-          - nb
-          - ne
-          - nl
-          - nn
-          - os
-          - pa
-          - pl
-          - pt
-          - pt-br
-          - ro
-          - ru
-          - sk
-          - sl
-          - sq
-          - sr
-          - sr-latn
-          - sv
-          - sw
-          - ta
-          - te
-          - tg
-          - th
-          - tk
-          - tr
-          - tt
-          - udm
-          - ug
-          - uk
-          - ur
-          - uz
-          - vi
-          - zh-hans
-          - zh-hant
-          type: string
-        style: form
-      responses:
-        "200":
-          content:
-            application/vnd.oai.openapi:
-              schema:
-                additionalProperties: {}
-                type: object
-            application/yaml:
-              schema:
-                additionalProperties: {}
-                type: object
-            application/vnd.oai.openapi+json:
-              schema:
-                additionalProperties: {}
-                type: object
-            application/json:
-              schema:
-                additionalProperties: {}
-                type: object
-          description: ""
-      security:
-      - tokenAuth: []
-      - {}
-      tags:
-      - schema
 components:
   schemas:
     EventAcceptedResponse:
@@ -222,6 +71,15 @@ components:
           - 10
         response:
           result: 15
+        tags:
+          env: production
+          trace_id: abc-123-def
+        properties:
+          device: mobile
+          app_version: 2.1.0
+          feature_flags:
+          - dark_mode
+          - beta_ui
         ip_address: 192.168.1.1
         sdk_language: python
         mcpcat_version: 1.0.0
@@ -296,6 +154,16 @@ components:
           type: string
         identify_data:
           description: Additional data for mcpcat:identify events
+          type: object
+        tags:
+          additionalProperties:
+            type: string
+          description: "Custom string key-value pairs. Keys: max 32 chars, alphanumeric/underscore/period/colon/dash\
+            \ only. Values: max 200 chars, no newlines. Max 50 entries."
+          type: object
+        properties:
+          description: "Custom structured data. Keys are strings, values can be string,\
+            \ number, boolean, array, object, or null (null values are filtered out)."
           type: object
         ip_address:
           description: IP address of the client
