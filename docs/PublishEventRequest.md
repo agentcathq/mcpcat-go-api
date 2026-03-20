@@ -21,6 +21,8 @@ Name | Type | Description | Notes
 **IdentifyActorGivenId** | Pointer to **string** | Actor ID for mcpcat:identify events | [optional] 
 **IdentifyActorName** | Pointer to **string** | Actor name for mcpcat:identify events | [optional] 
 **IdentifyData** | Pointer to **map[string]interface{}** | Additional data for mcpcat:identify events | [optional] 
+**Tags** | Pointer to **map[string]string** | Custom string key-value pairs. Keys: max 32 chars, alphanumeric/underscore/period/colon/dash only. Values: max 200 chars, no newlines. Max 50 entries. | [optional] 
+**Properties** | Pointer to **map[string]interface{}** | Custom structured data. Keys are strings, values can be string, number, boolean, array, object, or null (null values are filtered out). | [optional] 
 **IpAddress** | Pointer to **string** | IP address of the client | [optional] 
 **SdkLanguage** | Pointer to **string** | Programming language of the SDK used | [optional] 
 **McpcatVersion** | Pointer to **string** | Version of MCPCat being used | [optional] 
@@ -467,6 +469,56 @@ SetIdentifyData sets IdentifyData field to given value.
 `func (o *PublishEventRequest) HasIdentifyData() bool`
 
 HasIdentifyData returns a boolean if a field has been set.
+
+### GetTags
+
+`func (o *PublishEventRequest) GetTags() map[string]string`
+
+GetTags returns the Tags field if non-nil, zero value otherwise.
+
+### GetTagsOk
+
+`func (o *PublishEventRequest) GetTagsOk() (*map[string]string, bool)`
+
+GetTagsOk returns a tuple with the Tags field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTags
+
+`func (o *PublishEventRequest) SetTags(v map[string]string)`
+
+SetTags sets Tags field to given value.
+
+### HasTags
+
+`func (o *PublishEventRequest) HasTags() bool`
+
+HasTags returns a boolean if a field has been set.
+
+### GetProperties
+
+`func (o *PublishEventRequest) GetProperties() map[string]interface{}`
+
+GetProperties returns the Properties field if non-nil, zero value otherwise.
+
+### GetPropertiesOk
+
+`func (o *PublishEventRequest) GetPropertiesOk() (*map[string]interface{}, bool)`
+
+GetPropertiesOk returns a tuple with the Properties field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProperties
+
+`func (o *PublishEventRequest) SetProperties(v map[string]interface{})`
+
+SetProperties sets Properties field to given value.
+
+### HasProperties
+
+`func (o *PublishEventRequest) HasProperties() bool`
+
+HasProperties returns a boolean if a field has been set.
 
 ### GetIpAddress
 
