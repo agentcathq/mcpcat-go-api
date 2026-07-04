@@ -1,3 +1,8 @@
+> [!IMPORTANT]
+> **MCPcat is now AgentCat 🐱** — same team, same product, new name.
+> This module is **frozen**. It keeps working forever (nothing is retracted, old version pins keep resolving), but new development happens in **[`go.agentcat.com/api`](https://github.com/agentcathq/agentcat-go-api)**.
+> This is an internal generated client consumed by the SDK — don't use it directly. See **[MIGRATION.md](./MIGRATION.md)**.
+
 # ⚠️ This is NOT the MCPCat Go SDK
 
 **This directory contains internal API client code used by the MCPCat Go SDK. It is not intended for direct use.**
